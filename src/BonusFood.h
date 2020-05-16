@@ -20,6 +20,8 @@ public:
 
     bool isEaten() const;
 
+    float GetRemainingTime() const;
+
     void UpdatePosition(int x_, int y_);
 
     bool FoodCell(int x, int y) const;
@@ -33,9 +35,14 @@ private:
     void BonusThread();
 private:
     bool m_eaten{true};
+    unsigned int m_remaining_time{0};  // time in milliseconds
+    std::chrono::time_point<std::chrono::system_clock> m_deadline_last_checkpoint;
     std::mutex m_mutex;
     std::condition_variable m_cond;
     std::future<void> m_future;
+
+    // maximum time limit for bonus food to display in seconds
+    static unsigned int MAX_TIME_LIMIT;
 };
 
 
