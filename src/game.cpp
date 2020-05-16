@@ -1,6 +1,9 @@
-#include "game.h"
 #include <iostream>
+
 #include "SDL.h"
+#include "game.h"
+#include "utils.h"
+
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake(grid_width, grid_height),
@@ -19,6 +22,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   bool running = true;
 
+  unsigned int highest_score = read_score();
+
   while (running) {
     frame_start = SDL_GetTicks();
 
@@ -36,7 +41,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, highest_score, frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -47,6 +52,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     if (frame_duration < target_frame_duration) {
       SDL_Delay(target_frame_duration - frame_duration);
     }
+  }
+
+  if (score > highest_score) {
+      write_score(score);
   }
 }
 
