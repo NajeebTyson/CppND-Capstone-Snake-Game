@@ -1,4 +1,4 @@
-# CPPND: Capstone Snake Game Example
+# CPPND: Capstone Snake Game Extended with Bonus Food
 
 This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
 
@@ -29,3 +29,43 @@ In this project, you can build your own C++ application or extend this Snake gam
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
+
+## Project Rubrics
+
+#### Loop/Functions/IO
+* The project reads data from a file and process the data, or the program writes data to a file.
+    * File handling is used in program to save/read highest score
+    * File: `src/utils.h`, Line# `26...46`
+    * File: `src/game.cpp`, Line# `25, 58`
+#### Object Oriented Programming
+* The project uses Object Oriented Programming techniques.
+    * OOP is used in game objects.
+    * Files: `GameObject.h/cpp`, `BonusFood.h/cpp`
+* Classes use appropriate access specifiers for class members.
+    * Files: `GameObject.h`, `BonusFood.h`
+* Derived class functions override virtual base class functions.
+    * Bonus food is overriding the Update method of Game Object.
+    * File: `BonusFood.h`, Line# `17`
+    * File: `BonusFood.cpp`, Line# `6`
+* Templates generalize functions in the project.
+    * Random number generator `class RandomNumberGenerator` is generalized using templates
+    * FIle: `utils.h`, Line# `10`
+#### Memory Management
+* The project makes use of references in function declarations.
+    * `BonusFood` object is passed to renderer as a reference
+    * File: `rendere.h`, Line# `15`
+    * Method: `void Render(Snake const snake, SDL_Point const &food, const BonusFood &bonus_food);`
+* The project uses move semantics to move data, instead of copying it, where possible.
+    * File: `BonusFood.cpp`, Line# `23`
+#### Concurrency
+* The project uses multithreading.
+    * File: `BonusFood.cpp`, Line# `35`
+* A promise and future is used in the project.
+    * File: `BonusFood.h`, Line# `42`
+    * File: `BonusFood.cpp`, Line# `43`
+* A mutex or lock is used in the project.
+    * File: `BonusFood.h`, Line# `40`
+    * File: `BonusFood.cpp`, Line# `31, 66`
+* A condition variable is used in the project.
+    * File: `BonusFood.h`, Line# `41`
+    * File: `BonusFood.cpp`, Line# `42, 67`
