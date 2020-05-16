@@ -3,18 +3,19 @@
 
 #include <vector>
 #include "SDL.h"
+#include "GameObject.h"
 
-class Snake {
+class Snake: public GameObject {
  public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
   Snake(int grid_width, int grid_height)
       : grid_width(grid_width),
         grid_height(grid_height),
-        head_x(grid_width / 2),
-        head_y(grid_height / 2) {}
+        GameObject(grid_width / 2, grid_height / 2),
+        head_x(m_x), head_y(m_y) {}
 
-  void Update();
+  void Update() override;
 
   void GrowBody();
   bool SnakeCell(int x, int y);
@@ -24,8 +25,8 @@ class Snake {
   float speed{0.1f};
   int size{1};
   bool alive{true};
-  float head_x;
-  float head_y;
+  float &head_x;
+  float &head_y;
   std::vector<SDL_Point> body;
 
  private:
