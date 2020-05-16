@@ -63,6 +63,7 @@ void Game::PlaceFood() {
         }
         food.x = x;
         food.y = y;
+//        std::cout << "Placing food: (" << y <<", "<<x <<")\n";
         return;
     }
   }
@@ -70,7 +71,8 @@ void Game::PlaceFood() {
 
 void Game::PlaceBonusFood() {
     // we want to generate new bonus food after every five foods m_eaten
-    if (food_eaten%5 != 0 or food_eaten < 3) {
+    // TODO: make it 5
+    if (food_eaten%3 != 0 or food_eaten < 2) {
         return;
     }
     int x, y;
@@ -115,7 +117,11 @@ void Game::Update() {
   // Check if there's bonus food over here
   if (!bonus_food.isEaten() && bonus_food.FoodCell(new_x, new_y)) {
       bonus_food.Eaten(true);
+      score += 5;
+      snake.GrowBody();
   }
+
+  bonus_food.Update();
 }
 
 int Game::GetScore() const { return score; }

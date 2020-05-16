@@ -1,7 +1,6 @@
 #include "BonusFood.h"
 
 void BonusFood::Update() {
-
 }
 
 void BonusFood::UpdatePosition(int x_, int y_) {
@@ -15,7 +14,17 @@ bool BonusFood::isEaten() const {
 }
 
 void BonusFood::Eaten(bool eaten_) {
+    std::lock_guard<std::mutex> lck(m_mutex);
+
     m_eaten = eaten_;
+    if (!eaten_) {
+        m_future = std::async(&BonusFood::BonusThread, this);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    if (eaten_) {
+        m_cond.notify_one();
+        m_future.wait_for(std::chrono::milliseconds(100));
+    }
 }
 
 bool BonusFood::FoodCell(int x, int y) const {
@@ -36,5 +45,8 @@ std::vector<SDL_Point> BonusFood::PointToFoodBody(int x, int y) {
     return body;
 }
 
-
-
+void BonusFood::BonusThread() {
+    std::unique_lock<std::mutex> uLock(m_mutex);
+    m_cond.wait_for(uLock, std::chrono::seconds(5), [this]() {return isEaten();});
+    m_eaten = true;
+}
